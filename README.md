@@ -1,17 +1,17 @@
-# lb -- Luke's Blog Script
+# ZERM -- Modified lb
 
-Blogs and RSS feeds in less than 100 lines of shell script, actually, right now, less than 80.  `lb` stands for whatever. Maybe "Luke's blog", maybe "lightweight blog", maybe "less bloat", doesn't matter that much.
+This is all of the ZERM source, it is a German "newspaper", more like a blog, actually. This repo is a fork of Luke Smith's lb, which is just a better choice than my take on it. (look at chrissxYT/BlogTool if you want to see my failed take on it) `ZERM` stands for Zeitung zur Erhaltung der Rechte des Menschen.
 
-[Video Showcase](https://www.youtube.com/watch?v=S1WQlr42xDM)
+[Luke's Video Showcase](https://www.youtube.com/watch?v=S1WQlr42xDM)
 
 ## Features
 
-`lb` is an extremely small shell script that lets you write blog posts and will format them in all the ways you could ever want. Here's what it will produce:
+`zerm` is an extremely small shell script that lets you write blog posts and will format them in all the ways you could ever want. Here's what it will produce:
 
-- A Rolling Blog Page. See [my own Rolling Page](https://lukesmith.xyz/blog.html) as an example.
-- A list of all blog entries with dates: [Blog List File](https://lukesmith.xyz/blogindex.html).
-- All your blog posts appear as standalone entries/pages, for example [like this one](https://lukesmith.xyz/blog/the-real-bronze-age-mindset.html).
-- These standalone files exist in a `blog/` directory, which you can allow to be browsed manually via your Apache web server as I have [here](http://lukesmith.xyz/blog).
+- A Rolling Page.
+- A list of all blog entries with dates: [Blog List File](https://zerm.chrissx.ga/zermindex.html).
+- All the posts appear as standalone entries/pages.
+- These standalone files exist in a `zerm/` directory, which you can allow to be browsed manually via the Apache web server.
 - Blog posts are added, in full form, to an RSS feed of your chosing as well, see [my RSS feed](https://lukesmith.xyz/rss.xml).
 - Posts in the rolling blog have divs that can easily be modified via a CSS stylesheet, and in general everything is easily editable.
 - One command to delete published entries from the RSS feed, rolling blog and standalone entries simultaneously.
@@ -19,22 +19,22 @@ Blogs and RSS feeds in less than 100 lines of shell script, actually, right now,
 
 ## Usage
 
-`lb` commands are all one letter cause I'm lazy. They all stand for something though.
+`zerm` commands are all one letter cause I'm lazy. They all stand for something though.
 
 ```sh
-./lb n(ew)	# Make a new blog post draft.
-./lb e(edit)	# Edit a draft of an entry.
-./lb t(rash)	# Delete a draft of an entry.
-./lb p(ublish)	# Finalize/publish a blog post draft.
-./lb d(elete)	# Delete a published blog post.
-./lb r(evise)	# Revise an already published entry (you can republish it with `lb p` when done)
+./zerm n(ew)	# Make a new blog post draft.
+./zerm e(edit)	# Edit a draft of an entry.
+./zerm t(rash)	# Delete a draft of an entry.
+./zerm p(ublish)# Finalize/publish a blog post draft.
+./zerm d(elete)	# Delete a published blog post.
+./zerm r(evise)	# Revise an already published entry (you can republish it with `zerm p` when done)
 ```
 
 ## Installation
 
 + bash and GNU sed is required. >inb4 bloat
 + Be sure that you own or have writing privileges in the given directory, so the script can create the required directory structure.
-+ Download the `lb` script and put it in your website's main directory. The expectation is that your rolling blog file and RSS feed will be there as well.
++ Download the `zerm` script and put it in your website's main directory. The expectation is that your rolling blog file and RSS feed will be there as well.
 + Open the script and change the first few variables to match the names of the files you use in your website.
 + Add markers for where the new blog posts are added. **Don't skip this step.** See below.
 
@@ -43,16 +43,16 @@ Blogs and RSS feeds in less than 100 lines of shell script, actually, right now,
 For the system to work, add the following comment line to a (1) Rolling Blog File (as above), a (2) Blog List File and (3) RSS feed.
 
 ```
-<!-- LB -->
+<!-- ZERM -->
 ```
 
-You can format these files/pages how ever you want, just be sure to edit the `lb` file and change the variables at the top to match the file names of those you chose.
+You can format these files/pages how ever you want, just be sure to edit the `zerm` file and change the variables at the top to match the file names of those you chose.
 
 When you `finalize` a blog post, it will be added directly below that line in the proper format (either HTML or the proper RSS/XML format), give you the rolling blog and RSS feed for free.
 
 ## Info
 
-- The blog entries are stored in `blog/` in your websites root directory. Drafts are in `blog/.drafts`.
-- `blog/.htaccess` acts as a "database" file. `lb` stores filenames with their corresponding proper names and publishing dates there.
-- The other files in this repo just illustrate how you can use `lb`. Only the `lb` script itself is necessary.
+- The blog entries are stored in `zerm/` in your websites root directory. Drafts are in `zerm/.drafts`.
+- `zerm/.htaccess` acts as a "database" file. `zerm` stores filenames with their corresponding proper names and publishing dates there.
+- The other files in this repo just illustrate how you can use `zerm`. Only the `zerm` script itself is necessary.
 - Your `$EDITOR` variable should be set to your preferred text editor, vim will be assumed if you don't have one set.
