@@ -1,7 +1,7 @@
 #!/bin/bash
 name="ZERM"
 webdir="$PWD"
-website="https://zerm.chrissx.ga/" # Keep a trailing slash.
+website="https://zerm.chrissx.ga/"
 css="../style.css"
 blogfile="2019.html"
 indexfile="blogindex.html"
@@ -45,9 +45,9 @@ publish() { \
 	printf "\\n<item>\\n<title>%s</title>\\n<guid>%s%s#%s</guid>\\n<pubDate>%s</pubDate>\\n<description><![CDATA[\\n%s\\n]]></description>\\n</item>\\n\\n" "$realname" "$website" "$blogfile" "$base" "$rssdate" "$(cat "$webdir/zerm/.drafts/$basefile")" >  "$tmpdir/rss"
 	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='#%s'>link</a>&mdash;<a href='%s'>standalone</a>]</small>\\n%s\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$base" "zerm/$basefile" "$(cat "$webdir/zerm/.drafts/$basefile")" "$webdate" > "$tmpdir/html"
 	printf "<li>%s &ndash; <a href=\"zerm/%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$basefile" "$realname" > "$tmpdir/index"
-	sed -i "/<!-- LB -->/r $tmpdir/html" "$blogfile"
-	sed -i "/<!-- LB -->/r $tmpdir/rss" "$rssfile"
-	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
+	sed -i "/<!-- ZERM -->/r $tmpdir/html" "$blogfile"
+	sed -i "/<!-- ZERM -->/r $tmpdir/rss" "$rssfile"
+	sed -i "/<!-- ZERM -->/r $tmpdir/index" "$indexfile"
 	sed -i "/ \"$base.html\"/d" "$webdir/zerm/.htaccess"
 	echo "AddDescription \"$realname\" \"$basefile\" #$rssdate" >> "$webdir/zerm/.htaccess"
 	rm -f "$webdir/zerm/.drafts/$chosen"
@@ -72,5 +72,5 @@ case "$1" in
 	t*) listandReturn "$webdir"/zerm/.drafts/ trash && confirm trash && rm -f "$webdir/zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "$webdir/zerm/.htaccess" ; printf "Draft deleted.\\n" ;;
 	d*) listandReturn "$webdir"/zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "$webdir/zerm/.htaccess" ;;
 	r*) listandReturn "$webdir"/zerm/ revise && revise ;;
-	*) printf "zm ZERM system by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>\\nUsage:\\n  zm n:\\tnew draft\\n  zm e:\\tedit draft\\n  zm p:\\tpublish/finalize draft\\n  zm r:\\trevise published entry\\n  zm t:\\tdiscard draft\\n  zm d:\\tdelete published entry\\n\\nBe sure to have the following pattern added to your RSS feed, blog file and blog index:\\n\\n<!-- LB -->\\n\\nNew content will be added directly below that sequence. This is required.\\nSee https://github.com/chrissxYT/ZERM for more.\\n" ;;
+	*) printf "zm ZERM system by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>\\nUsage:\\n  zm n:\\tnew draft\\n  zm e:\\tedit draft\\n  zm p:\\tpublish/finalize draft\\n  zm r:\\trevise published entry\\n  zm t:\\tdiscard draft\\n  zm d:\\tdelete published entry\\n\\nBe sure to have the following pattern added to your RSS feed, blog file and blog index:\\n\\n<!-- ZERM -->\\n\\nNew content will be added directly below that sequence. This is required.\\nSee https://github.com/chrissxYT/ZERM for more.\\n" ;;
 esac

@@ -1,6 +1,6 @@
-# ZERM -- Modified lb
+# zm -- Modified lb
 
-This is all of the ZERM source, it is a German "newspaper", more like a blog, actually. This repo is a fork of Luke Smith's lb, which is just a better choice than my take on it. (look at chrissxYT/BlogTool if you want to see my failed take on it) `ZERM` stands for Zeitung zur Erhaltung der Rechte des Menschen.
+This is the source of the tool used to generate the ZERM page. This repo is a fork of Luke Smith's lb, which is just a better choice than my take on it. (look at chrissxYT/BlogTool if you want to see my failed take on it) `ZERM` stands for Zeitung zur Erhaltung der Rechte des Menschen.
 
 [Luke's Video Showcase](https://www.youtube.com/watch?v=S1WQlr42xDM)
 
@@ -22,19 +22,19 @@ This is all of the ZERM source, it is a German "newspaper", more like a blog, ac
 `zerm` commands are all one letter cause I'm lazy. They all stand for something though.
 
 ```sh
-./zerm n(ew)	# Make a new blog post draft.
-./zerm e(edit)	# Edit a draft of an entry.
-./zerm t(rash)	# Delete a draft of an entry.
-./zerm p(ublish)# Finalize/publish a blog post draft.
-./zerm d(elete)	# Delete a published blog post.
-./zerm r(evise)	# Revise an already published entry (you can republish it with `zerm p` when done)
+./zm n(ew)	# Make a new blog post draft.
+./zm e(edit)	# Edit a draft of an entry.
+./zm t(rash)	# Delete a draft of an entry.
+./zm p(ublish)# Finalize/publish a blog post draft.
+./zm d(elete)	# Delete a published blog post.
+./zm r(evise)	# Revise an already published entry (you can republish it with `zerm p` when done)
 ```
 
 ## Installation
 
 + bash and GNU sed is required. >inb4 bloat
 + Be sure that you own or have writing privileges in the given directory, so the script can create the required directory structure.
-+ Download the `zerm` script and put it in your website's main directory. The expectation is that your rolling blog file and RSS feed will be there as well.
++ Download the `zm` script and put it in your website's main directory. The expectation is that your rolling blog file and RSS feed will be there as well.
 + Open the script and change the first few variables to match the names of the files you use in your website.
 + Add markers for where the new blog posts are added. **Don't skip this step.** See below.
 
