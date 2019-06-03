@@ -4,11 +4,11 @@ webdir="$PWD"
 website="https://zerm.chrissx.ga/"
 css="../style.css"
 blogfile="2019.html"
-indexfile="blogindex.html"
+indexfile="index.html"
 rssfile="rss.xml"
 [ -z "$EDITOR" ] && EDITOR="vim"
 
-[ ! -d "$webdir/blog/.drafts" ] &&
+[ ! -d "$webdir/zerm/.drafts" ] &&
 read -erp "Initialize ZERM in $webdir?" ask &&
 	if [ "$ask" = "y" ]; then
 	printf "Initializing ZERM system...\\n"

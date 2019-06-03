@@ -27,20 +27,20 @@ This is the source of the tool used to generate the ZERM page. This repo is a fo
 ./zm t(rash)	# Delete a draft of an entry.
 ./zm p(ublish)# Finalize/publish a blog post draft.
 ./zm d(elete)	# Delete a published blog post.
-./zm r(evise)	# Revise an already published entry (you can republish it with `zerm p` when done)
+./zm r(evise)	# Revise an already published entry (you can republish it with `zm p` when done)
 ```
 
 ## Installation
 
 + bash and GNU sed is required. >inb4 bloat
 + Be sure that you own or have writing privileges in the given directory, so the script can create the required directory structure.
-+ Download the `zm` script and put it in your website's main directory. The expectation is that your rolling blog file and RSS feed will be there as well.
++ Download the `zm` script and put it in your website's main directory. The expectation is that your rolling page file and RSS feed will be there as well.
 + Open the script and change the first few variables to match the names of the files you use in your website.
 + Add markers for where the new blog posts are added. **Don't skip this step.** See below.
 
 ### Markers
 
-For the system to work, add the following comment line to a (1) Rolling Blog File (as above), a (2) Blog List File and (3) RSS feed.
+For the system to work, add the following comment line to a (1) Rolling Page File (as above), a (2) Article List File and (3) RSS feed.
 
 ```
 <!-- ZERM -->
