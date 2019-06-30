@@ -70,9 +70,9 @@ revise() { awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "zerm/$chosen" 
 
 case "$1" in
 	n*) newpost ;;
-	e*) listandReturn /zerm/.drafts/ edit && "$EDITOR" "zerm/.drafts/$chosen" ;;
-	p*) listandReturn /zerm/.drafts/ publish && publish ;;
-	t*) listandReturn /zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; printf "Draft deleted.\\n" ;;
+	e*) listandReturn zerm/.drafts/ edit && "$EDITOR" "zerm/.drafts/$chosen" ;;
+	p*) listandReturn zerm/.drafts/ publish && publish ;;
+	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; printf "Draft deleted.\\n" ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
 	r*) listandReturn zerm/ revise && revise ;;
 	*) printf "zm ZERM system by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>\\nUsage:\\n  zm n:\\tnew draft\\n  zm e:\\tedit draft\\n  zm p:\\tpublish/finalize draft\\n  zm r:\\trevise published entry\\n  zm t:\\tdiscard draft\\n  zm d:\\tdelete published entry\\n\\nBe sure to have the following pattern added to your RSS feed, blog file and blog index:\\n\\n<!-- ZERM -->\\n\\nNew content will be added directly below that sequence. This is required.\\nSee https://github.com/chrissxYT/zm for more.\\n" ;;
