@@ -7,18 +7,19 @@ rssfile="rss.xml"
 [ -z "$EDITOR" ] && EDITOR="vim"
 
 [ ! -d "zerm/.drafts" ] &&
-read -erp "Initialize ZERM in $webdir?" ask &&
+read -erp "Initialize ZERM here? " ask &&
     if [ "$ask" = "y" ]; then
 	echo "Initializing ZERM system..."
-	mkdir -pv "zerm/.drafts" || printf "Error. Do you have write permissions in this directory?\\n"
+	mkdir -pv "zerm/.drafts" || echo "Error. Do you have write permissions in this directory?"
 	echo "Options +Indexes" > "zerm/.htaccess"
 else
 	exit
 fi
 
-newpost() { read -erp "Give a title for your article:
-	" title
-	echo "$title" | grep "\"" >/dev/null && printf "Use unicode quotes in titles.\\n" && exit
+newpost() {
+        read -erp "Give a title for your article:
+        " title
+	echo "$title" | grep "\"" >/dev/null && echo "Use unicode quotes in titles." && exit
 	url="$(echo "$title" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
 	echo "AddDescription \"$title\" \"$url.html\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
 	[ -f "zerm/.drafts/$url.html" ] && echo "There is already an existing draft entry of that same name/URL." && exit
@@ -44,10 +45,36 @@ publish() { \
         read author_name
         [ ! -f ".authors/$author_name" ] && echo "Author \"$author_name\" doesn't exist." && exit 1
         author=$(cat ".authors/$author_name")
-	printf "<html>\\n<head>\\n<title>%s</title>\\n<link rel='stylesheet' type='text/css' href='%s'>\\n<meta charset='utf-8'/>\\n</head>\\n<body>\\n<h1>%s</h1>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s\\n<footer>von <strong>%s</strong></footer>\\n</body>\\n\\n</html>" "$realname" "$css" "$realname" "$basefile" "$(cat "zerm/.drafts/$basefile")" "$author" > "zerm/$basefile"
-	printf "\\n<item>\\n<title>%s</title>\\n<guid>%s%s#%s</guid>\\n<pubDate>%s</pubDate>\\n<description><![CDATA[\\n%s\\n]]></description>\\n</item>\\n\\n" "$realname" "$website" "$blogfile" "$base" "$rssdate" "$(cat "zerm/.drafts/$basefile")" >  "$tmpdir/rss"
-	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='#%s'>link</a>&mdash;<a href='%s'>standalone</a>]</small>\\n%s\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$base" "zerm/$basefile" "$(cat "zerm/.drafts/$basefile")" "$webdate" > "$tmpdir/html"
-	printf "<li>%s &ndash; <a href=\"zerm/%s\">%s</a></li>\\n" "$(date '+%d.%m.%Y')" "$basefile" "$realname" > "$tmpdir/index"
+	printf \
+"<html>
+\t<head>
+\t\t<title>$realname</title>
+\t\t<link rel='stylesheet' type='text/css' href='$css'>
+\t</head>
+\t<body>
+\t\t<h1>$realname</h1>
+\t\t<small>[<a href='$basefile'>standalone</a>]</small>
+$(cat "zerm/.drafts/$basefile")
+\t\t<footer>von <strong>$author</strong></footer>
+\t</body>
+</html>" > "zerm/$basefile"
+	echo "
+<item>
+<title>$realname</title>
+<guid>$website$blogfile#$base</guid>
+<pubDate>$rssdate</pubDate>
+<description><![CDATA[
+$(cat "zerm/.drafts/$basefile")
+]]></description>
+</item>
+" > "$tmpdir/rss"
+	echo "<div class='entry'>
+<h2 id='$base'>$realname</h2>
+<small>[<a href='#$base'>link</a>&mdash;<a href='zerm/$basefile'>standalone</a>]</small>
+$(cat "zerm/.drafts/$basefile")
+<small>$webdate</small>
+</div>" > "$tmpdir/html"
+	echo "<li>$(date '+%d.%m.%Y') &ndash; <a href=\"zerm/$basefile\">$realname</a></li>" > "$tmpdir/index"
 	sed -i "/<!-- ZERM -->/r $tmpdir/html" "$blogfile"
 	sed -i "/<!-- ZERM -->/r $tmpdir/rss" "$rssfile"
 	sed -i "/<!-- ZERM -->/r $tmpdir/index" "$indexfile"
@@ -56,23 +83,31 @@ publish() { \
 	rm -f "zerm/.drafts/$chosen"
 }
 
-confirm() { read -erp "Really $1 \"$base\"? (y/N) " choice && echo "$choice" | grep -i "^y$" >/dev/null || exit 1 ;}
+confirm() {
+        read -erp "Really $1 \"$base\"? (y/N) " choice && \
+                echo "$choice" | grep -i "^y$" >/dev/null \
+        || exit 1
+}
 
 delete() { \
 	sed -i "/<item/{:a;N;/<\\/item>/!ba};/#$base.html<\\/guid/d" $rssfile
 	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" $blogfile
 	sed -i "/<li>.*<a href=\"zerm\\/$base.html\">/d" $indexfile
-	rm "zerm/$basefile" 2>/dev/null && printf "Old ZERM article removed.\\n" ;}
+	rm "zerm/$basefile" 2>/dev/null && \
+                echo "Old ZERM article removed."
+}
 
-revise() { awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "zerm/$chosen" > "zerm/.drafts/$basefile"
+revise() {
+        awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "zerm/$chosen" > "zerm/.drafts/$basefile"
 	"$EDITOR" "zerm/.drafts/$basefile"
-	printf "Revision stored in zerm/.drafts. Publish as normal entry when desired.\\n" ;}
+	echo "Revision stored in zerm/.drafts. Publish as normal entry when desired."
+}
 
 case "$1" in
 	n*) newpost ;;
 	e*) listandReturn zerm/.drafts/ edit && "$EDITOR" "zerm/.drafts/$chosen" ;;
 	p*) listandReturn zerm/.drafts/ publish && publish ;;
-	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; printf "Draft deleted.\\n" ;;
+	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
 	r*) listandReturn zerm/ revise && revise ;;
 	*) echo "zm ZERM system by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>
