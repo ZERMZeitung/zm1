@@ -9,7 +9,7 @@ rssfile="rss.xml"
 [ ! -d "zerm/.drafts" ] &&
 read -erp "Initialize ZERM in $webdir?" ask &&
     if [ "$ask" = "y" ]; then
-	printf "Initializing ZERM system...\\n"
+	echo "Initializing ZERM system..."
 	mkdir -pv "zerm/.drafts" || printf "Error. Do you have write permissions in this directory?\\n"
 	echo "Options +Indexes" > "zerm/.htaccess"
 else
@@ -44,7 +44,7 @@ publish() { \
         read author_name
         [ ! -f ".authors/$author_name" ] && echo "Author \"$author_name\" doesn't exist." && exit 1
         author=$(cat ".authors/$author_name")
-	printf "<html>\\n<head>\\n<title>%s</title>\\n<link rel='stylesheet' type='text/css' href='%s'>\\n<meta charset='utf-8'/>\\n</head>\\n<body>\\n<h1>%s</h1>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s\\n<footer>von <strong>%s</strong></footer>\\n</body>\\n\\n</html>" "$realname" "$css" "$realname" "../$blogfile" "$base" "$basefile" "$(cat "zerm/.drafts/$basefile")" "$author" > "zerm/$basefile"
+	printf "<html>\\n<head>\\n<title>%s</title>\\n<link rel='stylesheet' type='text/css' href='%s'>\\n<meta charset='utf-8'/>\\n</head>\\n<body>\\n<h1>%s</h1>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s\\n<footer>von <strong>%s</strong></footer>\\n</body>\\n\\n</html>" "$realname" "$css" "$realname" "$basefile" "$(cat "zerm/.drafts/$basefile")" "$author" > "zerm/$basefile"
 	printf "\\n<item>\\n<title>%s</title>\\n<guid>%s%s#%s</guid>\\n<pubDate>%s</pubDate>\\n<description><![CDATA[\\n%s\\n]]></description>\\n</item>\\n\\n" "$realname" "$website" "$blogfile" "$base" "$rssdate" "$(cat "zerm/.drafts/$basefile")" >  "$tmpdir/rss"
 	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='#%s'>link</a>&mdash;<a href='%s'>standalone</a>]</small>\\n%s\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$base" "zerm/$basefile" "$(cat "zerm/.drafts/$basefile")" "$webdate" > "$tmpdir/html"
 	printf "<li>%s &ndash; <a href=\"zerm/%s\">%s</a></li>\\n" "$(date '+%d.%m.%Y')" "$basefile" "$realname" > "$tmpdir/index"
