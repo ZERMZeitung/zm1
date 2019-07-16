@@ -52,6 +52,7 @@ publish() { \
 \t\t<link rel='stylesheet' type='text/css' href='$css'>
 \t</head>
 \t<body>
+\t\t<a href='../index.html'>zurück</a>
 \t\t<h1>$realname</h1>
 \t\t<small>[<a href='$basefile'>standalone</a>]</small>
 $(cat "zerm/.drafts/$basefile")
