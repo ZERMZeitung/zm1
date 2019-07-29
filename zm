@@ -24,7 +24,8 @@ newpost() {
 	echo "AddDescription \"$title\" \"$url.html\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
 	[ -f "zerm/.drafts/$url.html" ] && echo "There is already an existing draft entry of that same name/URL." && exit
 	[ -f "zerm/$url.html" ] && echo "There is already an existing published entry of that same name/URL." && exit
-	$EDITOR "zerm/.drafts/$url.html" ;}
+	$EDITOR "zerm/.drafts/$url.html"
+}
 
 listandReturn() {
 	ls -rc "$1" | awk -F '/' '{print $NF}' | nl
@@ -75,6 +76,10 @@ $(cat "zerm/.drafts/$basefile")
 $(cat "zerm/.drafts/$basefile")
 <small>$webdate</small>
 </div>" > "$tmpdir/html"
+        SHORT_URL_ID=0
+        while [ -f $ID.html ] ; do SHORT_URL_ID=$(($SHORT_URL_ID + 1)) ; done
+        LONG_URL="$website"zerm/"$basefile"
+        echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
 	echo "<li>$(date '+%d.%m.%Y') &ndash; <a href=\"zerm/$basefile\">$realname</a></li>" > "$tmpdir/index"
 	sed -i "/<!-- ZERM -->/r $tmpdir/html" "$blogfile"
 	sed -i "/<!-- ZERM -->/r $tmpdir/rss" "$rssfile"
