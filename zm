@@ -46,19 +46,24 @@ publish() { \
         read author_name
         [ ! -f ".authors/$author_name" ] && echo "Author \"$author_name\" doesn't exist." && exit 1
         author=$(cat ".authors/$author_name")
-	printf \
-"<html>
-\t<head>
-\t\t<title>$realname</title>
-\t\t<link rel='stylesheet' type='text/css' href='$css'>
-\t</head>
-\t<body>
-\t\t<a href='../index.html'>zurück</a>
-\t\t<h1>$realname</h1>
-\t\t<small>[<a href='$basefile'>standalone</a>]</small>
+        SHORT_URL_ID=0
+        while [ -f $ID.html ] ; do SHORT_URL_ID=$(($SHORT_URL_ID + 1)) ; done
+        LONG_URL="$website"zerm/"$basefile"
+        echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
+	echo "<html>
+<head>
+<title>$realname</title>
+<link rel='stylesheet' type='text/css' href='$css'>
+</head>
+<body>
+<a href='../index.html'>zurück</a>
+<h1>$realname</h1>
+<small>[<a href='$basefile'>standalone</a>]</small>
 $(cat "zerm/.drafts/$basefile")
-\t\t<footer>von <strong>$author</strong></footer>
-\t</body>
+<iframe scrolling='no' frameborder='0' style='width: 70px; height: 20px;' src='https://platform.twitter.com/widgets/tweet_button.0639d67d95b7680840758b6833f06d87.de.html#dnt=false&amp;lang=de&amp;text=$(echo "$realname" | sed "s/ /%20/g" | sed "s/?/%3F/g")%20via%20@ZERMZeitung%20#ZERM&amp;type=share&amp;url=https%3A%2F%2Fzm.chrissx.ga%2F$SHORT_URL_ID'></iframe>
+<br/><br/>
+<footer>von <strong>$author</strong></footer>
+</body>
 </html>" > "zerm/$basefile"
 	echo "
 <item>
@@ -76,10 +81,6 @@ $(cat "zerm/.drafts/$basefile")
 $(cat "zerm/.drafts/$basefile")
 <small>$webdate</small>
 </div>" > "$tmpdir/html"
-        SHORT_URL_ID=0
-        while [ -f $ID.html ] ; do SHORT_URL_ID=$(($SHORT_URL_ID + 1)) ; done
-        LONG_URL="$website"zerm/"$basefile"
-        echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
 	echo "<li>$(date '+%d.%m.%Y') &ndash; <a href=\"zerm/$basefile\">$realname</a></li>" > "$tmpdir/index"
 	sed -i "/<!-- ZERM -->/r $tmpdir/html" "$blogfile"
 	sed -i "/<!-- ZERM -->/r $tmpdir/rss" "$rssfile"
