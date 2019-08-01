@@ -106,6 +106,7 @@ delete() { \
 }
 
 revise() {
+        # this breaks because of the twitter button
         awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "zerm/$chosen" > "zerm/.drafts/$basefile"
 	"$EDITOR" "zerm/.drafts/$basefile"
 	echo "Revision stored in zerm/.drafts. Publish as normal entry when desired."

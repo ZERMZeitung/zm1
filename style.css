@@ -1,21 +1,47 @@
-html {
+@font-face
+{
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu Regular'), local('Ubuntu-Regular'), url(https://fonts.gstatic.com/s/ubuntu/v13/4iCs6KVjbNBYlgoKfw72.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+html
+{
 	max-width: 1050px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 30px;
 	color: #333;
 	padding-bottom: 200px;
-	 }
+        font-family: 'Ubuntu', sans-serif;
+}
 
-a {color: royalblue; }
-a:hover {color: lightblue; }
-
-.entry {
+.entry
+{
 	border-left: 10px solid darkslategray;
 	padding: 0px 10px 0px 10px;
 	border-radius: 0 30px 30px 0;
 	margin-bottom: 20px;
 	background-color: #eee;
-	}
+}
 
-.entry h2 { margin: 5px auto 2px auto; }
+.entry h2
+{
+        margin: 5px auto 2px auto;
+}
+
+.logo1
+{
+        font-size: 40px;
+}
+
+.logo2
+{
+        font-size: 28px;
+}
+
+.zerm
+{
+}
