@@ -61,7 +61,7 @@ publish() { \
 <h1>$realname</h1>
 <small>[<a href='$basefile'>standalone</a>]</small>
 $(cat "zerm/.drafts/$basefile")
-<iframe scrolling='no' frameborder='0' style='width: 70px; height: 20px;' src='https://platform.twitter.com/widgets/tweet_button.0639d67d95b7680840758b6833f06d87.de.html#dnt=false&amp;lang=de&amp;text=$(echo "$realname" | sed "s/ /%20/g" | sed "s/?/%3F/g")%20via%20@ZERMZeitung%20#ZERM&amp;type=share&amp;url=https%3A%2F%2Fzm.chrissx.ga%2F$SHORT_URL_ID'></iframe>
+<iframe scrolling='no' frameborder='0' style='width: 70px; height: 20px;' src='https://platform.twitter.com/widgets/tweet_button.0639d67d95b7680840758b6833f06d87.de.html#dnt=false&amp;lang=de&amp;text=$(echo "$realname" | sed "s/ /%20/g" | sed "s/?/%3F/g")%20#ZERM&amp;type=share&amp;url=https%3A%2F%2Fzm.chrissx.ga%2F$SHORT_URL_ID&amp;via=ZERMZeitung'></iframe>
 <br/><br/>
 <footer>von <strong>$author</strong></footer>
 </body>
