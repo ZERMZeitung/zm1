@@ -15,7 +15,7 @@ This is the source of the tool used to generate the ZERM page. This repo is a fo
 - Articles are added, in full form, to an RSS feed of your chosing as well, see [our RSS feed](https://zerm.chrissx.ga/rss.xml).
 - Posts in the rolling page have divs that can easily be modified via a CSS stylesheet, and in general everything is easily editable.
 - One command to delete published articles from the RSS feed, rolling page and standalone entries simultaneously.
-- Published articles can be revised, updating the standalone article pages, the RSS feed and everything else. (the RSS feed actually seems to have the article twice after revising it)
+- Published articles can be revised, updating the standalone article pages, the RSS feed and everything else.
 
 ## Usage
 
