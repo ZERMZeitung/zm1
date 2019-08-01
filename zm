@@ -48,7 +48,7 @@ publish() { \
         [ ! -f ".authors/$author_name" ] && echo "Author \"$author_name\" doesn't exist." && exit 1
         author=$(cat ".authors/$author_name")
         SHORT_URL_ID=0
-        while [ -f zm/$ID.html ] ; do SHORT_URL_ID=$(($SHORT_URL_ID + 1)) ; done
+        while [ -f zm/$SHORT_URL_ID.html ] ; do SHORT_URL_ID=$(($SHORT_URL_ID + 1)) ; done
         LONG_URL="$website"zerm/"$basefile"
         echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
 	echo "<html>
