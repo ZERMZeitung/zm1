@@ -28,10 +28,12 @@ newpost() {
 }
 
 listandReturn() {
+        filecount=$(ls "$1" | wc -l)
 	ls -rc "$1" | awk -F '/' '{print $NF}' | nl
-        [ $(ls -rc "$1" | wc -l) -eq 0 ] && echo "There's nothing to $2." && exit 1
-	read -erp "Pick an entry by number to $2, or press Ctrl-C to cancel. " number
-	chosen="$(ls -rc "$1" | nl | grep -w  "$number" | awk '{print $2}')"
+        [ $filecount -eq 0 ] && echo "There's nothing to $2." && exit 1
+        number=1
+        [ $filecount -eq 1 ] || read -erp "Pick an entry by number to $2, or press Ctrl-C to cancel. " number
+	chosen="$(ls -rc "$1" | nl | grep -w "$number" | awk '{print $2}')"
 	basefile="$(basename "$chosen")" && base="${basefile%.*}"
 }
 
@@ -92,9 +94,8 @@ $(cat "zerm/.drafts/$basefile")
 }
 
 confirm() {
-        read -erp "Really $1 \"$base\"? (y/N) " choice && \
-                echo "$choice" | grep -i "^y$" >/dev/null \
-        || exit 1
+        read -erp "Really $1 \"$base\"? (y/N) " choice
+        [ "$choice" = "y" ] || exit 1
 }
 
 delete() { \
@@ -119,7 +120,7 @@ case "$1" in
 	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
 	r*) listandReturn zerm/ revise && revise ;;
-	*) echo "zm ZERM system by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>
+	*) echo "zm by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>
 Usage:
   zm n: new draft
   zm e: edit draft
