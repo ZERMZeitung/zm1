@@ -47,14 +47,22 @@ publish() { \
 	[ -z "$rssdate" ] && rssdate="$(LC_TIME=en_US date '+%a, %d %b %Y %H:%M:%S %z')" # RSS date formats must comply with standards to validate.
 	webdate="$(date '+%d.%m.%Y %H:%M:%S %Z')" # But this visible date you can set to any format.
 	tmpdir=$(mktemp -d)
-        echo -n "Author name: "
-        read author_name
+        filecount=$(ls "$1" | wc -l)
+        [ $filecount -eq 0 ] && echo "There are no authors." && exit 1
+        number=1
+        [ $filecount -eq 1 ] || {
+                ls -rc "$1" | awk -F '/' '{print $NF}' | nl
+                read -erp "Pick an author by number, or press Ctrl-C to cancel. " number
+        }
+        author_name="$(basename "$(ls -rc "$1" | nl | grep -w "$number" | awk '{print $2}')")"
         [ ! -f ".authors/$author_name" ] && echo "Author \"$author_name\" doesn't exist." && exit 1
         author=$(cat ".authors/$author_name")
         SHORT_URL_ID=0
-        while [ -f zm/$SHORT_URL_ID.html ] ; do SHORT_URL_ID=$(($SHORT_URL_ID + 1)) ; done
+        while [ -f zm/$SHORT_URL_ID.html ] ; do
+                SHORT_URL_ID=$(($SHORT_URL_ID + 1))
+        done
         LONG_URL="$website"zerm/"$basefile"
-        echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
+        echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'><script>window.location.href = '$LONG_URL'</script></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
 	echo "<html>
 <head>
 <title>$realname</title>
@@ -97,13 +105,13 @@ $(cat "zerm/.drafts/$basefile")
 
 confirm() {
         read -erp "Really $1 \"$base\"? (y/N) " choice
-        [ "$choice" = "y" ] || exit 1
+        [ "$choice" = "y*" ] || [ "$choice" = "Y*" ] || exit 1
 }
 
 delete() { \
-	sed -i "/<item/{:a;N;/<\\/item>/!ba};/#$base<\\/guid/d" $rssfile
-	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" $blogfile
-	sed -i "/<li>.*<a href=\"zerm\\/$base.html\">/d" $indexfile
+	sed -i "/<item/{:a;N;/<\\/item>/!ba};/#$base<\\/guid/d" "$rssfile"
+	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$blogfile"
+	sed -i "/<li>.*<a href=\"zerm\\/$base.html\">/d" "$indexfile"
 	rm "zerm/$basefile" 2>/dev/null && \
                 echo "Old ZERM article removed."
 }
