@@ -4,6 +4,7 @@ css="../style.css"
 blogfile="2019.html"
 indexfile="index.html"
 rssfile="rss.xml"
+sitemapfile="sitemap.xml"
 [ -z "$EDITOR" ] && EDITOR="vim"
 
 [ ! -d "zerm/.drafts" ] &&
@@ -95,9 +96,11 @@ $(cat "zerm/.drafts/$basefile")
 <small>$webdate</small>
 </div>" > "$tmpdir/html"
 	echo "<li>$(date '+%d.%m.%Y') &ndash; <a href=\"zerm/$basefile\">$realname</a></li>" > "$tmpdir/index"
+        echo "<url><loc>$LONG_URL</loc><changefreq>monthly</changefreq></url>" > "$tmpdir/sitemap"
 	sed -i "/<!-- ZERM -->/r $tmpdir/html" "$blogfile"
 	sed -i "/<!-- ZERM -->/r $tmpdir/rss" "$rssfile"
 	sed -i "/<!-- ZERM -->/r $tmpdir/index" "$indexfile"
+	sed -i "/<!-- ZERM -->/r $tmpdir/sitemap" "$sitemapfile"
 	sed -i "/ \"$base.html\"/d" "zerm/.htaccess"
 	echo "AddDescription \"$realname\" \"$basefile\" #$rssdate" >> "zerm/.htaccess"
 	rm -f "zerm/.drafts/$chosen"
