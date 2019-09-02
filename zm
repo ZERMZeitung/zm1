@@ -9,16 +9,6 @@ rssfile="rss.xml"
 sitemapfile="sitemap.xml"
 [ -z "$EDITOR" ] && EDITOR="vim"
 
-[ ! -d "zerm/.drafts" ] &&
-read -erp "Initialize ZERM here? " ask &&
-    if [ "$ask" = "y" ]; then
-	echo "Initializing ZERM system..."
-	mkdir -pv "zerm/.drafts" || echo "Error. Do you have write permissions in this directory?"
-	echo "Options +Indexes" > "zerm/.htaccess"
-else
-	exit
-fi
-
 newpost() {
         read -erp "Give a title for your article:
         " title
