@@ -23,7 +23,7 @@ This is the source of the tool used to generate the ZERM page. This repo is a fo
 
 ```sh
 zm n(ew)	# Make a new draft.
-zm e(edit)	# Edit a draft of an entry.
+zm e(dit)	# Edit a draft of an entry.
 zm t(rash)	# Delete a draft of an entry.
 zm p(ublish)    # Finalize/publish a draft.
 zm d(elete)	# Delete a published article.
