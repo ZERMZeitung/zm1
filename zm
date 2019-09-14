@@ -9,6 +9,8 @@ rssfile="rss.xml"
 sitemapfile="sitemap.xml"
 [ -z "$EDITOR" ] && EDITOR="vim"
 
+[ ! -d "zerm/.drafts" ] && mkdir "zerm/.drafts"
+
 newpost() {
         read -erp "Give a title for your article:
         " title
@@ -17,7 +19,7 @@ newpost() {
 	echo "AddDescription \"$title\" \"$url.html\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
 	[ -f "zerm/.drafts/$url.html" ] && echo "There is already an existing draft entry of that same name/URL." && exit
 	[ -f "zerm/$url.html" ] && echo "There is already an existing published entry of that same name/URL." && exit
-	$EDITOR "zerm/.drafts/$url.html"
+	"$EDITOR" "zerm/.drafts/$url.html"
 }
 
 listandReturn() {
@@ -32,7 +34,7 @@ listandReturn() {
 	basefile="$(basename "$chosen")" && base="${basefile%.*}"
 }
 
-publish() { \
+publish() {
 	delete
 	htaccessentry=$(grep "$basefile" "zerm/.htaccess")
 	realname="$(echo "$htaccessentry" | cut -d'"' -f2)"
@@ -104,7 +106,7 @@ confirm() {
         [ "$choice" = "y*" ] || [ "$choice" = "Y*" ] || exit 1
 }
 
-delete() { \
+delete() {
 	sed -i "/<item/{:a;N;/<\\/item>/!ba};/#$base<\\/guid/d" "$rssfile"
 	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$blogfile"
 	sed -i "/<li>.*<a href=\"zerm\\/$base.html\">/d" "$indexfile"
@@ -132,7 +134,7 @@ Usage:
   zm e: edit draft
   zm p: publish/finalize draft
   zm r: revise published entry
-  zm t: discard draft
+  zm t: trash draft
   zm d: delete published entry
 
 Be sure to have the following pattern added to your RSS feed, blog file and blog index:
