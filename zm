@@ -1,6 +1,6 @@
 #!/bin/bash
-website="https://zerm.chrissx.ga/"
-shortener="https://zm.chrissx.ga/"
+website="https://zerm.eu/"
+shortener="https://zerm.link/"
 twittername="ZERMZeitung"
 css="../style.css"
 blogfile="2019.html"
@@ -128,7 +128,7 @@ case "$1" in
 	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
 	r*) listandReturn zerm/ revise && revise ;;
-	*) echo "zm by Christian Häußler <chrissx@chrissx.ga>, based on lb by Luke Smith <luke@lukesmith.xyz>
+	*) echo "zm by Christian Häußler <chrissx@chrissx.de>, based on lb by Luke Smith <luke@lukesmith.xyz>
 Usage:
   zm n: new draft
   zm e: edit draft
