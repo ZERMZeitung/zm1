@@ -1,12 +1,14 @@
 #!/bin/bash
-website="https://zerm.eu/"
-shortener="https://zerm.link/"
+website_domain="zerm.eu"
+shortener_domain="zerm.link"
 twittername="ZERMZeitung"
 css="../style.css"
 blogfile="2019.html"
 indexfile="index.html"
 rssfile="rss.xml"
 sitemapfile="sitemap.xml"
+website="https://$website_domain/"
+shortener="https://$shortener_domain/"
 [ -z "$EDITOR" ] && EDITOR="vim"
 
 [ ! -d "zerm/.drafts" ] && mkdir "zerm/.drafts"
@@ -69,7 +71,7 @@ publish() {
 <h1>$realname</h1>
 <small>[<a href='$basefile'>standalone</a>]</small>
 $(cat "zerm/.drafts/$basefile")
-<a href='https://twitter.com/intent/tweet?text=$(echo "$realname" | sed 's/ /%20/g' | sed 's/?/%3F/g')%20%23ZERM&amp;url=https%3A%2F%2Fzm.chrissx.ga%2F$SHORT_URL_ID&amp;via=ZERMZeitung' target="_blank" class="twitterbutton"><i></i></a>
+<a href='https://twitter.com/intent/tweet?text=$(echo "$realname" | sed 's/ /%20/g' | sed 's/?/%3F/g')%20%23ZERM&amp;url=https%3A%2F%2F$shortener_domain%2F$SHORT_URL_ID&amp;via=ZERMZeitung' target="_blank" class="twitterbutton"><i></i></a>
 <br/><br/>
 <footer>von <strong>$author</strong></footer>
 </body>
