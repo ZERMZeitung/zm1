@@ -100,6 +100,8 @@ $(cat "zerm/.drafts/$basefile")
 	sed -i "/ \"$base.html\"/d" "zerm/.htaccess"
 	echo "AddDescription \"$realname\" \"$basefile\" #$rssdate" >> "zerm/.htaccess"
 	rm -f "zerm/.drafts/$chosen"
+        echo "@everyone Neuer ZERM-Artikel! $SHORT_URL" | xclip -in -selection clipboard
+        echo "Article published and Discord message copied to your clipboard!"
 }
 
 confirm() {
@@ -111,8 +113,7 @@ delete() {
 	sed -i "/<item/{:a;N;/<\\/item>/!ba};/#$base<\\/guid/d" "$rssfile"
 	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$blogfile"
 	sed -i "/<li>.*<a href=\"zerm\\/$base.html\">/d" "$indexfile"
-	rm "zerm/$basefile" 2>/dev/null && \
-                echo "Old ZERM article removed."
+	rm "zerm/$basefile" && echo "Old article removed."
 }
 
 revise() {
@@ -129,7 +130,8 @@ case "$1" in
 	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
 	r*) listandReturn zerm/ revise && revise ;;
-	*) echo "zm by Christian Häußler <chrissx@chrissx.de>, based on lb by Luke Smith <luke@lukesmith.xyz>
+        s*) listandReturn zerm/.drafts/ schedule && sleep $1 && echo $2 | publish && git add . && git commit -m "published scheduled article (automated)" && git push ;;
+	*) echo "zm by Chris Häußler <chrissx@chrissx.de>, based on lb by Luke Smith <luke@lukesmith.xyz>
 Usage:
   zm n: new draft
   zm e: edit draft
@@ -137,6 +139,7 @@ Usage:
   zm r: revise published entry
   zm t: trash draft
   zm d: delete published entry
+  zm s: schedule entry (only use if you know, what you're doing, beta stuff)
 
 Be sure to have the following pattern added to your RSS feed, blog file and blog index:
 
