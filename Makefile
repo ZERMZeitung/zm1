@@ -1,6 +1,6 @@
 all: install
 
 install:
-	@cp -p zm /usr/bin/zm
+	@cp -f zm /usr/bin/zm
 
 clean:
