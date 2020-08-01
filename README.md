@@ -1,21 +1,21 @@
 # zm -- Modified lb
 
-This is the source of the tool used to generate the ZERM page. This repo is a fork of Luke Smith's lb, which is just a better choice than my take on it. (look at chrissxYT/BlogTool if you want to see my failed take on it)
+This is the source of the tool used to generate (most of) the ZERM website. This repo is a fork of Luke Smith's lb, which is just a better choice than my take on it. (look at chrissxYT/BlogTool if you want to see my failed take on it)
 
-[Luke's Video Showcase](https://www.youtube.com/watch?v=S1WQlr42xDM)
+**WARNING: fascism** [Luke's Video Showcase](https://www.youtube.com/watch?v=S1WQlr42xDM)
 
 ## Features
 
 `zm` is an extremely small shell script that lets you write articles and will format them in all the ways you could ever want. Here's what it will produce:
 
 - A Rolling Page.
-- A list of all articles with dates: [The index.html](https://zerm.chrissx.ga/index.html).
+- A list of all articles with dates: [The index.html](https://zerm.eu/index.html).
 - All the articles appear as standalone entries/pages.
 - These standalone files exist in a `zerm/` directory.
-- Articles are added, in full form, to an RSS feed of your chosing as well, see [our RSS feed](https://zerm.chrissx.ga/rss.xml).
+- Articles are added, in full form, to an RSS feed of your chosing as well, see [our RSS feed](https://zerm.eu/rss.xml).
 - Posts in the rolling page have divs that can easily be modified via a CSS stylesheet, and in general everything is easily editable.
 - One command to delete published articles from the RSS feed, rolling page and standalone entries simultaneously.
-- Published articles can be revised, updating the standalone article pages, the RSS feed and everything else.
+- Published articles can be revised, updating the standalone article pages, the RSS feed and everything else. (currently broken due to share buttons)
 
 ## Usage
 
@@ -32,7 +32,7 @@ zm r(evise)	# Revise an already published entry (you can republish it with `zm p
 
 ## Installation
 
-+ bash and GNU sed are required. >inb4 bloat
++ bash and GNU sed are required. → inb4 bloat
 + Be sure that you own or have writing privileges in the given directory, so the script can create the required directory structure.
 + Open the script and change the first few variables to match the names of the files you use in your website.
 + Clone the repository and run `sudo make install`
