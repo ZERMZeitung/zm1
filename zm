@@ -21,6 +21,7 @@ newpost() {
 	echo "AddDescription \"$title\" \"$url.html\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
 	[ -f "zerm/.drafts/$url.html" ] && echo "There is already an existing draft entry of that same name/URL." && exit
 	[ -f "zerm/$url.html" ] && echo "There is already an existing published entry of that same name/URL." && exit
+	touch "zerm/.drafts/$url.html"
 	"$EDITOR" "zerm/.drafts/$url.html"
 }
 
