@@ -22,7 +22,11 @@ newpost() {
 	[ -f "zerm/.drafts/$url.html" ] && echo "There is already an existing draft entry of that same name/URL." && exit
 	[ -f "zerm/$url.html" ] && echo "There is already an existing published entry of that same name/URL." && exit
 	touch "zerm/.drafts/$url.html"
-	"$EDITOR" "zerm/.drafts/$url.html"
+	if [[ $1 == n ]]; then
+	        $EDITOR "zerm/.drafts/$url.html"
+	else
+	        $EDITOR "zerm/.drafts/$url.md"
+        fi
 }
 
 listandReturn() {
@@ -37,7 +41,18 @@ listandReturn() {
 	basefile="$(basename "$chosen")" && base="${basefile%.*}"
 }
 
+getExtension() {
+  : "${1%/}"
+  printf '%s\n' "${_##*.}"
+}
+
 publish() {
+	if [[ $(getExtension $chosen) == md ]]; then
+	        markdown "zerm/.drafts/$chosen" > "zerm/.drafts/${chosen/.md/.html}"
+	        rm -rf "zerm/.drafts/$chosen"
+	        chosen="${chosen/.md/.html}"
+	        basefile="$(basename "$chosen")" && base="${basefile%.*}"
+        fi
 	delete
 	htaccessentry=$(grep "$basefile" "zerm/.htaccess")
 	realname="$(echo "$htaccessentry" | cut -d'"' -f2)"
@@ -118,6 +133,8 @@ delete() {
 }
 
 revise() {
+        echo "You really don't wanna use this right now."
+        return
         # this breaks because of the twitter button
         awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "zerm/$chosen" > "zerm/.drafts/$basefile"
 	"$EDITOR" "zerm/.drafts/$basefile"
@@ -125,7 +142,8 @@ revise() {
 }
 
 case "$1" in
-	n*) newpost ;;
+	n*) newpost n ;;
+	m*) newpost m ;;
 	e*) listandReturn zerm/.drafts/ edit && "$EDITOR" "zerm/.drafts/$chosen" ;;
 	p*) listandReturn zerm/.drafts/ publish && publish ;;
 	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
@@ -134,7 +152,8 @@ case "$1" in
         s*) listandReturn zerm/.drafts/ schedule && sleep $1 && echo $2 | publish && git add . && git commit -m "published scheduled article (automated)" && git push ;;
 	*) echo "zm by Chris Häußler <chrissx@chrissx.de>, based on lb by Luke Smith <luke@lukesmith.xyz>
 Usage:
-  zm n: new draft
+  zm n: new draft in html
+  zm m: new draft in md
   zm e: edit draft
   zm p: publish/finalize draft
   zm r: revise published entry
