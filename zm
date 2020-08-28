@@ -77,6 +77,7 @@ publish() {
         SHORT_URL="$shortener$SHORT_URL_ID"
         LONG_URL="$website"zerm/"$basefile"
         echo "$SHORT_URL_ID,$LONG_URL" >> zm/short.csv
+        echo "<html><head><meta http-equiv='refresh' content='0; URL=$LONG_URL'><script>window.location.href = '$LONG_URL'</script></head><body>Sie sollten <a href='$LONG_URL'>hierhin</a> weitergeleitet werden.</body></html>" > zm/$SHORT_URL_ID.html
 	echo "<html>
 <head>
 <title>$realname</title>
