@@ -14,7 +14,8 @@ shortener="https://$shortener_domain/"
 mkdir -p "zerm/.drafts"
 
 newpost() {
-        read -erp "Give a title for your article:\n        " title
+        read -erp "Give a title for your article:
+        " title
 	echo "$title" | grep "\"" >/dev/null && echo "Use unicode quotes in titles." && exit
 	url="$(echo "$title" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
 	[[ $1 == n ]] && EXT=".html" || EXT=".md"
@@ -146,7 +147,7 @@ case "$1" in
 	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
 	r*) listandReturn zerm/ revise && revise ;;
-        s*) listandReturn zerm/.drafts/ schedule && sleep $1 && echo $2 | publish && git add . && git commit -m "published scheduled article (automated)" && git push ;;
+        s*) listandReturn zerm/.drafts/ schedule && sleep $2 && echo $3 | publish && git add . && git commit -m "published scheduled article (automated)" && git push ;;
 	*) echo "zm by Chris Häußler <chrissx@chrissx.de>, based on lb by Luke Smith <luke@lukesmith.xyz>
 Usage:
   zm n: new draft in html
