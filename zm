@@ -14,19 +14,15 @@ shortener="https://$shortener_domain/"
 mkdir -p "zerm/.drafts"
 
 newpost() {
-        read -erp "Give a title for your article:
-        " title
+        read -erp "Give a title for your article:\n        " title
 	echo "$title" | grep "\"" >/dev/null && echo "Use unicode quotes in titles." && exit
 	url="$(echo "$title" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
-	echo "AddDescription \"$title\" \"$url.html\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
-	[ -f "zerm/.drafts/$url.html" ] && echo "There is already an existing draft entry of that same name/URL." && exit
-	[ -f "zerm/$url.html" ] && echo "There is already an existing published entry of that same name/URL." && exit
-	touch "zerm/.drafts/$url.html"
-	if [[ $1 == n ]]; then
-	        $EDITOR "zerm/.drafts/$url.html"
-	else
-	        $EDITOR "zerm/.drafts/$url.md"
-        fi
+	[[ $1 == n ]] && EXT=".html" || EXT=".md"
+	echo "AddDescription \"$title\" \"$url$EXT\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
+	[ -f "zerm/.drafts/$url$EXT" ] && echo "There is already an existing draft entry of that same name/URL." && exit
+	[ -f "zerm/$url$EXT" ] && echo "There is already an existing published entry of that same name/URL." && exit
+	touch "zerm/.drafts/$url$EXT"
+	$EDITOR "zerm/.drafts/$url$EXT"
 }
 
 listandReturn() {
