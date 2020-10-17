@@ -46,7 +46,7 @@ getExtension() {
 publish() {
 	if [[ $(getExtension $chosen) == md ]]; then
 	        markdown "zerm/.drafts/$chosen" > "zerm/.drafts/${chosen/.md/.html}"
-	        rm -rf "zerm/.drafts/$chosen"
+	        rm -f "zerm/.drafts/$chosen"
 	        chosen="${chosen/.md/.html}"
 	        basefile="$(basename "$chosen")" && base="${basefile%.*}"
         fi
@@ -58,7 +58,7 @@ publish() {
 	webdate="$(date '+%d.%m.%Y %H:%M:%S %Z')" # But this visible date you can set to any format.
 	tmpdir=$(mktemp -d)
         filecount=$(ls ".authors" | wc -l)
-        [ $filecount -eq 0 ] && echo "There are no authors." && exit 1
+        [ $filecount -eq 0 ] && { echo "There are no authors." ; exit 1 ; }
         number=1
         [ $filecount -eq 1 ] || {
                 ls -rc ".authors" | awk -F '/' '{print $NF}' | nl
@@ -102,6 +102,7 @@ $(cat "zerm/.drafts/$basefile")
 	echo "<div class='entry'>
 <h2 id='$base'>$realname</h2>
 <small>[<a href='#$base'>link</a>&mdash;<a href='zerm/$basefile'>standalone</a>]</small>
+<br/>
 $(cat "zerm/.drafts/$basefile")
 <small>$webdate</small>
 </div>" > "$tmpdir/html"
@@ -127,7 +128,7 @@ delete() {
 	sed -i "/<item/{:a;N;/<\\/item>/!ba};/#$base<\\/guid/d" "$rssfile"
 	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$blogfile"
 	sed -i "/<li>.*<a href=\"zerm\\/$base.html\">/d" "$indexfile"
-	rm "zerm/$basefile" && echo "Old article removed."
+	rm "zerm/$basefile" >/dev/null && echo "Old article removed."
 }
 
 revise() {
