@@ -51,9 +51,9 @@ publish() {
 	        basefile="$(basename "$chosen")" && base="${basefile%.*}"
         fi
 	delete
-	htaccessentry=$(grep "$basefile" "zerm/.htaccess")
+	htaccessentry=$(grep "$base" "zerm/.htaccess")
 	realname="$(echo "$htaccessentry" | cut -d'"' -f2)"
-	rssdate="$(grep "$basefile" zerm/.htaccess | sed "s/.*\.html\"* *#*//g" | tr -d '\n')"
+	rssdate="$(echo "$htaccessentry" | sed "s/.*\.html\"* *#*//g" | tr -d '\n')"
 	[ -z "$rssdate" ] && rssdate="$(LC_TIME=en_US date '+%a, %d %b %Y %H:%M:%S %z')" # RSS date formats must comply with standards to validate.
 	webdate="$(date '+%d.%m.%Y %H:%M:%S %Z')" # But this visible date you can set to any format.
 	tmpdir=$(mktemp -d)
