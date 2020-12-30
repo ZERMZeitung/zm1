@@ -17,7 +17,7 @@ newpost() {
         read -erp "Give a title for your article:
         " title
 	echo "$title" | grep "\"" >/dev/null && echo "Use unicode quotes in titles." && exit
-	url="$(echo "$title" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
+	url="$(echo "$title" | iconv -f UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
 	[[ $1 == n ]] && EXT=".html" || EXT=".md"
 	echo "AddDescription \"$title\" \"$url$EXT\"" >> "zerm/.htaccess" || { echo "Error: Is htaccess writeable?"; exit; }
 	[ -f "zerm/.drafts/$url$EXT" ] && echo "There is already an existing draft entry of that same name/URL." && exit
