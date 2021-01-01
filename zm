@@ -131,15 +131,6 @@ delete() {
 	rm "zerm/$basefile" >/dev/null && echo "Old article removed."
 }
 
-revise() {
-        echo "You really don't wanna use this right now."
-        return
-        # this breaks because of the twitter button
-        awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "zerm/$chosen" > "zerm/.drafts/$basefile"
-	"$EDITOR" "zerm/.drafts/$basefile"
-	echo "Revision stored in zerm/.drafts. Publish as normal entry when desired."
-}
-
 case "$1" in
 	n*) newpost n ;;
 	m*) newpost m ;;
@@ -147,7 +138,6 @@ case "$1" in
 	p*) listandReturn zerm/.drafts/ publish && publish ;;
 	t*) listandReturn zerm/.drafts/ trash && confirm trash && rm -f "zerm/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ; echo "Draft deleted." ;;
 	d*) listandReturn zerm/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "zerm/.htaccess" ;;
-	r*) listandReturn zerm/ revise && revise ;;
         s*) listandReturn zerm/.drafts/ schedule && sleep $2 && echo $3 | publish && git add . && git commit -m "published scheduled article (automated)" && git push ;;
 	*) echo "zm by Chris Häußler <chrissx@chrissx.de>, based on lb by Luke Smith <luke@lukesmith.xyz>
 Usage:
@@ -155,7 +145,6 @@ Usage:
   zm m: new draft in md
   zm e: edit draft
   zm p: publish/finalize draft
-  zm r: revise published entry
   zm t: trash draft
   zm d: delete published entry
   zm s: schedule entry (only use if you know, what you're doing, beta stuff)
